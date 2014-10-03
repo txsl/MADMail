@@ -9,7 +9,8 @@ def return_families(department):
     person_details = {}
     family_names = {}
 
-    all_results = newerpol.query(t_MumsandDadsAllocation).filter_by(OCNameTypeName=department, YearID=28) #  CurrentYear=u'1')
+    all_results = newerpol.query(t_MumsandDadsAllocation).filter_by(OCNameTypeName=department, CurrentYear=1)
+
 
     for res in all_results:
         person_details[res.FirstParentLogin] = (res.FirstParentFName, res.FirstParent)
@@ -52,4 +53,4 @@ def return_families(department):
     return family_list, family_names
 
 if __name__ == "__main__":
-    return_families('Electrical & Electronic Engineering')
+    print return_families(u'Electrical & Electronic Engineering')
