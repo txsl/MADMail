@@ -1,5 +1,7 @@
 from threading import Thread
 from flask_mail import Message
+import time
+
 from web import mail, app
 
 def async(f):
@@ -32,6 +34,7 @@ class BatchMail(object):
             with mail.connect() as conn:
                 for item in self.to_send:
                     conn.send(item)
+                    time.sleep(0.001)  # to avoid overloading the other end
 
 
 from HTMLParser import HTMLParser
