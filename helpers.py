@@ -18,6 +18,12 @@ def send_async_email(msg):
         mail.send(msg)
 
 
+def send_mail(subject, sender, to_who, text_body="", html_body=""):
+    msg = Message(subject=subject, sender=sender, recipients=to_who)
+    msg.body = text_body
+    msg.html = html_body
+    send_async_email(msg)
+
 class BatchMail(object):
 
     def __init__(self):

@@ -1,8 +1,10 @@
+import time
+
 from jinja2 import Environment, PackageLoader
 from flask import Markup
 
 from models import return_families, return_emails_to_send, dept_id_to_name
-from helpers import BatchMail, strip_tags
+from helpers import BatchMail, strip_tags, send_mail
 
 env = Environment(loader=PackageLoader('cron', 'templates'))
 
@@ -48,9 +50,12 @@ for email in emails_to_send:
         output = template.render(content=Markup(merged_content))
         text_output = strip_tags(merged_content)
 
-        msg = mail.queue_mail(email.Subject, ("Mums and Dads", "mumsanddads@imperial.ac.uk"),
+
+        send_mail(email.Subject, ("Mums and Dads", "mumsanddads@imperial.ac.uk"),
                               send_to, html_body=output, text_body=text_output)
-    mail.send_queue()
+
+        time.sleep(.5)
+    # mail.send_queue()
 
 
 """
