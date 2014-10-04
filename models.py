@@ -13,8 +13,7 @@ def return_families(department):
     family_names = {}
     family_emails = {}
 
-    all_results = newerpol.query(t_MumsandDadsAllocation).filter_by(OCNameTypeName=department, CurrentYear=1)
-
+    all_results = newerpol.query(t_MumsandDadsAllocation).filter_by(OCNameTypeName=unicode(department), CurrentYear=1)
 
     for res in all_results:
         person_details[res.FirstParentLogin] = (res.FirstParentFName, res.FirstParent)
@@ -64,8 +63,10 @@ def return_families(department):
 
     return family_list, family_names, family_emails
 
+
 def return_emails_to_send():
     return db.MailMerges.filter(db.MailMerges.Sent==False)
+
 
 def dept_id_to_name(dept_id):
     return db.Departments.filter(db.Departments.DepartmentId==dept_id)[0].DepartmentNameTypeName

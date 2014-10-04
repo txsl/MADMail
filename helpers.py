@@ -15,11 +15,23 @@ def send_async_email(msg):
         # print app.MAIL_SERVER
         mail.send(msg)
 
-def send_mail(subject, sender, to_who, text_body="", html_body=""):
-    msg = Message(subject=subject, sender=sender, recipients=to_who)
-    msg.body = text_body
-    msg.html = html_body
-    send_async_email(msg)
+
+class BatchMail(object):
+
+    def __init__(self):
+        self.to_send = []
+
+    def queue_mail(self, subject, sender, to_who, text_body="", html_body=""):
+        msg = Message(subject=subject, sender=sender, recipients=to_who)
+        msg.body = text_body
+        msg.html = html_body
+        self.to_send.append(msg)
+
+    def send_queue(self):
+        with app.app_context():
+            with mail.connect() as conn:
+                for item in self.to_send:
+                    conn.send(item)
 
 
 from HTMLParser import HTMLParser
