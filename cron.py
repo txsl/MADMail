@@ -47,7 +47,7 @@ for email in emails_to_send:
         print send_to
 
         # Comment when deployed hashtag safetyfirst hashtag alwaysuseprotection
-        send_to = ['txl11@ic.ac.uk']
+        # send_to = ['txl11@ic.ac.uk']
 
         # Time for templating
         template = env.get_template(TEMPLATE)
@@ -59,7 +59,7 @@ for email in emails_to_send:
                         send_to, html_body=output, text_body=text_output)
 
         # Comment when deployed hashtag safetyfirst hashtag alwaysuseprotection
-        break
+        # break
 
     mail.send_queue()
 
