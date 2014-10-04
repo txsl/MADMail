@@ -46,7 +46,7 @@ for email in emails_to_send:
         send_to = ['txl11@ic.ac.uk']
 
         # Time for templating
-        template = env.get_template('email.html')
+        template = env.get_template('different_email.html')
         output = template.render(content=Markup(merged_content))
         text_output = strip_tags(merged_content)
 
