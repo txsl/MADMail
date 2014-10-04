@@ -36,19 +36,25 @@ class BatchMail(object):
                     conn.send(item)
                     time.sleep(0.001)  # to avoid overloading the other end
 
+import re
 
-from HTMLParser import HTMLParser
+TAG_RE = re.compile(r'<[^>]+>')
 
-class MLStripper(HTMLParser):
-    def __init__(self):
-        self.reset()
-        self.fed = []
-    def handle_data(self, d):
-        self.fed.append(d)
-    def get_data(self):
-        return ''.join(self.fed)
+def strip_tags(text):
+    return TAG_RE.sub('', text)
 
-def strip_tags(html):
-    s = MLStripper()
-    s.feed(html)
-    return s.get_data()
+# from HTMLParser import HTMLParser
+#
+# class MLStripper(HTMLParser):
+#     def __init__(self):
+#         self.reset()
+#         self.fed = []
+#     def handle_data(self, d):
+#         self.fed.append(d)
+#     def get_data(self):
+#         return ''.join(self.fed)
+#
+# def strip_tags(html):
+#     s = MLStripper()
+#     s.feed(html)
+#     return s.get_data()
