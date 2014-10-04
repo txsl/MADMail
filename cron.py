@@ -3,7 +3,8 @@ from jinja2 import Environment, PackageLoader
 from models import return_families, return_emails_to_send, dept_id_to_name
 from helpers import BatchMail, strip_tags
 
-env = Environment(loader=PackageLoader('cron', 'templates'))
+env = Environment(loader=PackageLoader('cron', 'templates'), autoescape = True,
+                               extensions = ['jinja2.ext.autoescape'])
 
 MERGE_MAPPINGS = {
     "!PARENTFIRSTNAMES!": "ParentFirstNames",
