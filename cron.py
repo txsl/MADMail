@@ -1,10 +1,10 @@
 from jinja2 import Environment, PackageLoader
+from flask import Markup
 
 from models import return_families, return_emails_to_send, dept_id_to_name
 from helpers import BatchMail, strip_tags
 
-env = Environment(loader=PackageLoader('cron', 'templates'), autoescape = True,
-                               extensions = ['jinja2.ext.autoescape'])
+env = Environment(loader=PackageLoader('cron', 'templates'))
 
 MERGE_MAPPINGS = {
     "!PARENTFIRSTNAMES!": "ParentFirstNames",
@@ -45,7 +45,7 @@ for email in emails_to_send:
 
         # Time for templating
         template = env.get_template('email.html')
-        output = template.render(content=merged_content)
+        output = template.render(content=Markup(merged_content))
         text_output = strip_tags(merged_content)
 
         msg = mail.queue_mail(email.Subject, ("Mums and Dads", "mumsanddads@imperial.ac.uk"),
