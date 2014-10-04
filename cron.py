@@ -3,8 +3,8 @@ import time
 from jinja2 import Environment, PackageLoader
 from flask import Markup
 
-from models import return_families, return_emails_to_send, dept_id_to_name
-from helpers import BatchMail, strip_tags, send_mail
+from models import return_families, return_emails_to_send, dept_id_to_name, mark_merge_as_sent
+from helpers import BatchMail, strip_tags, send_mail, send_via_smtplib
 
 env = Environment(loader=PackageLoader('cron', 'templates'))
 

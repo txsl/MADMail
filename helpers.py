@@ -1,7 +1,14 @@
+# -*- coding: utf-8 -*-
+
 from threading import Thread
 from flask_mail import Message
 import time
+import smtplib
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from config import EMAIL
 from web import mail, app
 
 def async(f):
@@ -41,6 +48,31 @@ class BatchMail(object):
                 for item in self.to_send:
                     conn.send(item)
                     time.sleep(0.001)  # to avoid overloading the other end
+
+
+def send_via_smtplib(subject, sender, to_who, text_body="", html_body=""):
+    # headers = "From: %s\r\nTo: %s\r\nSubject: %s\r\n" % (sender, ", ".join(to_who), subject)
+    msg = MIMEMultipart('alternative')
+    msg["Subject"] = subject
+    msg["From"] = sender
+    msg["To"] = ", ".join(to_who)
+
+    part1 = MIMEText(text_body, 'plain')
+    part2 = MIMEText(html_body, 'html')
+
+    msg.attach(part1)
+    msg.attach(part2)
+
+    s = smtplib.SMTP(EMAIL['MAIL_SERVER'])
+    if EMAIL['MAIL_USE_TLS']:
+        s.starttls()
+    if EMAIL['MAIL_PASSWORD']:
+        s.login(EMAIL['MAIL_USERNAME'], EMAIL['MAIL_PASSWORD'])
+    s.set_debuglevel(1)
+    s.sendmail(sender, to_who, msg.as_string())
+    s.quit()
+
+
 
 import re
 
