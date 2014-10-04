@@ -23,13 +23,13 @@ emails_to_send = return_emails_to_send()
 
 for email in emails_to_send:
 
-    # TODO - save the email as set right now in case of issues/slow sending
+    mark_merge_as_sent(email)
 
     dept_name = dept_id_to_name(email.DepartmentId)
     family_list, family_names, family_emails = return_families(dept_name)
 
     mail = BatchMail()
-
+    print "Number of emails to send: %s" % (len(family_list),)
     for parents, children in family_list.iteritems():
 
         merged_content = email.Content
@@ -44,7 +44,6 @@ for email in emails_to_send:
         if email.email_children:
             send_to = send_to + family_emails[parents]['Children']
 
-        print email.email_parents, email.email_children
         print send_to
 
         # Comment when deployed hashtag safetyfirst hashtag alwaysuseprotection
@@ -56,8 +55,11 @@ for email in emails_to_send:
         text_output = strip_tags(merged_content)
 
 
-        send_mail(email.Subject, ("Mums and Dads", "mumsanddads@imperial.ac.uk"),
-                              send_to, html_body=output, text_body=text_output)
+        mail.queue_mail(email.Subject, ("Mums and Dads", "mumsanddads@imperial.ac.uk"),
+                        send_to, html_body=output, text_body=text_output)
+
+        # Comment when deployed hashtag safetyfirst hashtag alwaysuseprotection
+        break
 
     mail.send_queue()
 

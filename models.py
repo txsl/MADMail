@@ -71,6 +71,9 @@ def return_emails_to_send():
 def dept_id_to_name(dept_id):
     return db.Departments.filter(db.Departments.DepartmentId==dept_id)[0].DepartmentNameTypeName
 
+def mark_merge_as_sent(mail):
+    mail.Sent=True
+    db.commit()
 
 if __name__ == "__main__":
     print return_families(u'Electrical & Electronic Engineering')
